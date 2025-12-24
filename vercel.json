@@ -10,8 +10,5 @@
     "app/api/**/*.ts": {
       "maxDuration": 60
     }
-  },
-  "env": {
-    "GEMINI_API_KEY": "@gemini_api_key"
   }
 }
