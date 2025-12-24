@@ -4,34 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^5.7.0",
+    "@google/generative-ai": "^0.21.0",
     "@vercel/analytics": "^1.1.1",
-    "axios": "^1.6.2",
-    "bcryptjs": "^2.4.3",
     "framer-motion": "^10.16.16",
-    "jsonwebtoken": "^9.0.2",
     "next": "14.0.4",
-    "next-auth": "^4.24.5",
-    "pusher": "^5.2.0",
-    "pusher-js": "^8.4.0-rc2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
-    "uuid": "^9.0.1",
-    "zod": "^3.22.4"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
@@ -40,7 +27,6 @@
     "eslint": "^8.55.0",
     "eslint-config-next": "14.0.4",
     "postcss": "^8.4.32",
-    "prisma": "^5.7.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.3.3"
   },

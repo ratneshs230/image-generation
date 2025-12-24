@@ -1,9 +1,6 @@
 import Link from 'next/link';
-import { getAuthSession } from '@/lib/auth';
 
-export default async function Home() {
-  const session = await getAuthSession();
-
+export default function Home() {
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center text-center">
       <div>
@@ -14,25 +11,17 @@ export default async function Home() {
         </h1>
 
         <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-          Collaborate with friends to evolve images through AI-powered prompts.
-          Take turns, watch the magic unfold, and see where your creativity leads!
+          Create and evolve images through AI-powered prompts.
+          Watch the magic unfold and see where your creativity leads!
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          {session ? (
-            <>
-              <Link href="/create" className="btn btn-primary text-lg px-8 py-3">
-                Create a Room
-              </Link>
-              <Link href="/join" className="btn btn-secondary text-lg px-8 py-3">
-                Join a Game
-              </Link>
-            </>
-          ) : (
-            <Link href="/login" className="btn btn-primary text-lg px-8 py-3">
-              Get Started
-            </Link>
-          )}
+          <Link href="/play" className="btn btn-primary text-lg px-8 py-3">
+            Start Creating
+          </Link>
+          <Link href="/dashboard" className="btn btn-secondary text-lg px-8 py-3">
+            View My Games
+          </Link>
         </div>
       </div>
 
@@ -40,25 +29,25 @@ export default async function Home() {
       <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8">
         <div className="card p-6">
           <div className="text-4xl mb-4">🎨</div>
-          <h3 className="text-lg font-semibold mb-2">AI-Powered Editing</h3>
+          <h3 className="text-lg font-semibold mb-2">AI-Powered Creation</h3>
           <p className="text-gray-400 text-sm">
-            Use natural language prompts to transform images with Gemini Nano AI
+            Use natural language prompts to generate and transform images with Gemini AI
           </p>
         </div>
 
         <div className="card p-6">
-          <div className="text-4xl mb-4">👥</div>
-          <h3 className="text-lg font-semibold mb-2">Real-Time Collaboration</h3>
+          <div className="text-4xl mb-4">💾</div>
+          <h3 className="text-lg font-semibold mb-2">Local Storage</h3>
           <p className="text-gray-400 text-sm">
-            Play with friends in real-time with instant updates
+            All your images and games are saved locally on your device
           </p>
         </div>
 
         <div className="card p-6">
           <div className="text-4xl mb-4">🔄</div>
-          <h3 className="text-lg font-semibold mb-2">Turn-Based Evolution</h3>
+          <h3 className="text-lg font-semibold mb-2">Image Evolution</h3>
           <p className="text-gray-400 text-sm">
-            Take turns to see how your collective creativity evolves the image
+            Build upon previous images to see how your creations evolve
           </p>
         </div>
       </div>
@@ -69,10 +58,10 @@ export default async function Home() {
 
         <div className="space-y-6 text-left">
           {[
-            { step: 1, title: 'Create or Join a Room', desc: 'Start a new game room or join with a code' },
-            { step: 2, title: 'Begin with an Image or Prompt', desc: 'Upload a starting image or generate one' },
-            { step: 3, title: 'Take Turns Editing', desc: 'Each player provides a prompt to transform the image' },
-            { step: 4, title: 'View the Evolution', desc: 'Watch how the image evolves and see the journey' },
+            { step: 1, title: 'Start a New Game', desc: 'Create a game session to begin generating images' },
+            { step: 2, title: 'Enter a Prompt', desc: 'Describe the image you want to create' },
+            { step: 3, title: 'Generate and Evolve', desc: 'Watch AI generate your image, then modify it with new prompts' },
+            { step: 4, title: 'Save and Share', desc: 'Download your images and export your game history' },
           ].map(({ step, title, desc }) => (
             <div key={step} className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full bg-game-highlight flex items-center justify-center shrink-0">

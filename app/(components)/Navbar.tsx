@@ -1,12 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { getLocalUser, updateUserName, LocalUser } from '@/lib/local-storage';
 
 export function Navbar() {
-  const { data: session, status } = useSession();
-  const user = session?.user;
+  const [user, setUser] = useState<LocalUser | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newName, setNewName] = useState('');
+
+  useEffect(() => {
+    setUser(getLocalUser());
+  }, []);
+
+  const handleSaveName = () => {
+    if (newName.trim()) {
+      const updated = updateUserName(newName.trim());
+      setUser(updated);
+    }
+    setIsEditing(false);
+  };
 
   return (
     <nav className="bg-game-card border-b border-gray-800">
@@ -20,60 +33,50 @@ export function Navbar() {
 
           {/* Navigation Links */}
           <div className="flex items-center space-x-4">
-            {status === 'loading' ? (
-              <div className="spinner w-5 h-5" />
-            ) : user ? (
-              <>
-                <Link
-                  href="/dashboard"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Dashboard
-                </Link>
-                <Link href="/create" className="btn btn-primary text-sm">
-                  Create Room
-                </Link>
-                <Link
-                  href="/join"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Join
-                </Link>
+            <Link
+              href="/dashboard"
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              My Games
+            </Link>
+            <Link href="/play" className="btn btn-primary text-sm">
+              New Game
+            </Link>
 
-                {/* User Menu */}
-                <div className="flex items-center space-x-3 ml-4 pl-4 border-l border-gray-700">
-                  <Link href="/profile" className="flex items-center space-x-2">
-                    {user.image ? (
-                      <Image
-                        src={user.image}
-                        alt={user.name || 'User'}
-                        width={32}
-                        height={32}
-                        className="rounded-full border border-gray-600"
-                      />
-                    ) : (
-                      <div className="w-8 h-8 rounded-full bg-game-accent flex items-center justify-center text-sm font-medium">
-                        {user.name?.charAt(0).toUpperCase() || 'U'}
-                      </div>
-                    )}
-                    <span className="text-gray-300 text-sm hidden sm:inline">
-                      {user.name}
-                    </span>
-                  </Link>
-
-                  <button
-                    onClick={() => signOut()}
-                    className="text-gray-400 hover:text-white text-sm"
-                  >
-                    Logout
+            {/* User Display */}
+            <div className="flex items-center space-x-3 ml-4 pl-4 border-l border-gray-700">
+              {isEditing ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={e => setNewName(e.target.value)}
+                    placeholder="Your name"
+                    className="input text-sm w-32"
+                    onKeyDown={e => e.key === 'Enter' && handleSaveName()}
+                    autoFocus
+                  />
+                  <button onClick={handleSaveName} className="btn btn-ghost text-sm">
+                    Save
                   </button>
                 </div>
-              </>
-            ) : (
-              <Link href="/login" className="btn btn-primary">
-                Sign In
-              </Link>
-            )}
+              ) : (
+                <>
+                  <div className="w-8 h-8 rounded-full bg-game-accent flex items-center justify-center text-sm font-medium">
+                    {user?.name?.charAt(0).toUpperCase() || 'U'}
+                  </div>
+                  <button
+                    onClick={() => {
+                      setNewName(user?.name || '');
+                      setIsEditing(true);
+                    }}
+                    className="text-gray-300 text-sm hover:text-white"
+                  >
+                    {user?.name || 'Guest'}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>
