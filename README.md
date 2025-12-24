@@ -7,7 +7,7 @@ A collaborative, real-time web application for an image editing game powered by 
 - **Real-time Collaboration**: Play with friends using Pusher for instant updates
 - **AI-Powered Image Editing**: Use natural language prompts to transform images with Gemini Nano
 - **Turn-Based Gameplay**: Fair turn management with clear indication of current player
-- **OAuth Authentication**: Secure login via Google or GitHub using NextAuth.js
+- **OAuth Authentication**: Secure login via Google or GitHub using NextAuth.js (JWT-based)
 - **Game History**: View and replay completed games with animated playback
 - **Content Moderation**: Built-in filtering for inappropriate content
 - **Responsive Design**: Works on desktop and mobile devices
@@ -16,7 +16,7 @@ A collaborative, real-time web application for an image editing game powered by 
 
 - **Framework**: Next.js 14 (App Router)
 - **Database**: PostgreSQL with Prisma ORM (Neon recommended for Vercel)
-- **Authentication**: NextAuth.js with OAuth providers
+- **Authentication**: NextAuth.js with OAuth providers (JWT sessions)
 - **Real-time**: Pusher for WebSocket-like functionality
 - **Styling**: Tailwind CSS
 - **AI**: Banana API with Gemini Nano model
@@ -52,7 +52,6 @@ Fill in your credentials:
 
 ```env
 # NextAuth
-NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=generate-with-openssl-rand-base64-32
 
 # Database (use Neon for Vercel deployment)
@@ -121,7 +120,6 @@ Visit `http://localhost:3000`
 
    | Variable | Description |
    |----------|-------------|
-   | `NEXTAUTH_URL` | Your Vercel deployment URL |
    | `NEXTAUTH_SECRET` | Generate with `openssl rand -base64 32` |
    | `DATABASE_URL` | PostgreSQL connection string |
    | `DIRECT_URL` | Direct PostgreSQL connection (for migrations) |
