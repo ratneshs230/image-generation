@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: image-game-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-imagegame}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-imagegame123}
+      POSTGRES_DB: ${POSTGRES_DB:-image_game_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-imagegame}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (for sessions and caching)
+  redis:
+    image: redis:7-alpine
+    container_name: image-game-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: image-game-backend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-imagegame}:${POSTGRES_PASSWORD:-imagegame123}@postgres:5432/${POSTGRES_DB:-image_game_db}
+      - REDIS_URL=redis://redis:6379
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - GITHUB_CALLBACK_URL=${GITHUB_CALLBACK_URL}
+      - BANANA_API_KEY=${BANANA_API_KEY}
+      - BANANA_MODEL_KEY=${BANANA_MODEL_KEY:-gemini-nano}
+      - ENABLE_CONTENT_MODERATION=true
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:3001}
+        - VITE_SOCKET_URL=${VITE_SOCKET_URL:-http://localhost:3001}
+    container_name: image-game-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:

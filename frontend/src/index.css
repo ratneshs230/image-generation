@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #0f0f23;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #16213e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0f3460;
+}
+
+/* Animation keyframes */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #e94560 0%, #0ea5e9 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow effects */
+.glow {
+  box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+}
+
+.glow-blue {
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+}
+
+/* Button styles */
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-game-highlight text-white hover:bg-opacity-80
+           active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-game-accent text-white hover:bg-opacity-80
+           border border-gray-600 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-gray-300 hover:bg-game-accent
+           hover:text-white active:scale-95;
+  }
+
+  .card {
+    @apply bg-game-card rounded-xl border border-gray-800
+           shadow-lg;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 bg-game-accent border border-gray-700
+           rounded-lg text-white placeholder-gray-500
+           focus:outline-none focus:border-primary-500
+           focus:ring-1 focus:ring-primary-500 transition-colors;
+  }
+}
+
+/* Loading spinner */
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #e94560;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Image container */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.image-container img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Turn indicator animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.turn-indicator::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #e94560;
+  animation: pulse-ring 1.5s ease-out infinite;
+}
