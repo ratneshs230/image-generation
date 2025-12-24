@@ -62,7 +62,8 @@ export default function GameHistoryPage() {
     if (game && game.turns[selectedTurn]) {
       downloadImage(
         game.turns[selectedTurn].imageData,
-              );
+        `${game.name}-turn-${selectedTurn + 1}.png`
+      );
       toast.success('Image downloaded!');
     }
   };
@@ -95,7 +96,9 @@ export default function GameHistoryPage() {
           <h1 className="text-2xl font-bold">{game.name}</h1>
           <div className="flex items-center gap-4 text-sm text-gray-400">
             <span>{game.turns.length} turns</span>
-            <span className={}>
+            <span className={`px-2 py-0.5 rounded ${
+              game.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'
+            }`}>
               {game.status}
             </span>
           </div>
@@ -113,7 +116,7 @@ export default function GameHistoryPage() {
                 <img
                   key={selectedTurn}
                   src={currentTurn.imageData}
-                  alt={}
+                  alt={`Turn ${currentTurn.turnNumber}`}
                   className="max-w-full max-h-full object-contain"
                 />
               )}
@@ -198,11 +201,13 @@ export default function GameHistoryPage() {
                     setIsPlaying(false);
                     setSelectedTurn(index);
                   }}
-                  className={}
+                  className={`w-full text-left p-3 flex items-start gap-3 hover:bg-game-accent transition-colors ${
+                    index === selectedTurn ? 'bg-game-accent' : ''
+                  }`}
                 >
                   <img
                     src={turn.imageData}
-                    alt={}
+                    alt={`Turn ${turn.turnNumber}`}
                     className="w-12 h-12 object-cover rounded"
                   />
                   <div className="flex-1 min-w-0">
@@ -221,3 +226,4 @@ export default function GameHistoryPage() {
     </div>
   );
 }
+

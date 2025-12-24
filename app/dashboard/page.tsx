@@ -25,7 +25,7 @@ export default function DashboardPage() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm()) {
+    if (confirm(`Delete "${name}"? This cannot be undone.`)) {
       deleteLocalGame(id);
       loadGames();
       toast.success('Game deleted');
@@ -110,7 +110,7 @@ export default function DashboardPage() {
                 className="flex items-center justify-between p-4 hover:bg-game-accent transition-colors"
               >
                 <Link
-                  href={}
+                  href={`/history/${game.id}`}
                   className="flex items-center gap-4 flex-1"
                 >
                   <div className="w-16 h-16 rounded bg-game-accent flex items-center justify-center overflow-hidden">
@@ -127,7 +127,11 @@ export default function DashboardPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-medium">{game.name}</span>
-                      <span className={}>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                        game.status === 'active'
+                          ? 'bg-green-500/20 text-green-400'
+                          : 'bg-blue-500/20 text-blue-400'
+                      }`}>
                         {game.status}
                       </span>
                     </div>
@@ -161,3 +165,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
